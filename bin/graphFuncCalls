@@ -1,0 +1,2 @@
+#!/bin/sh
+((((ruby ../lib/convertToDot.rb) < ../in/specs > ../tmp/temporaryFile) && echo ../tmp/temporaryFile) | (ruby ../lib/dotToImage.rb))

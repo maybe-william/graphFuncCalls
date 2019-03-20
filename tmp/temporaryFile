@@ -1,0 +1,52 @@
+digraph codeMap{
+  subgraph cluster_convertToDotRB{
+    label = "convertToDotRB"
+    color = blue
+    convertToDotRB_main [label = "main"] [style = filled] [color = lightgrey]
+    subgraph cluster_convertToDotRB_Node{
+      label = "Node"
+      color = blue
+      subgraph cluster_convertToDotRB_Node_instance{
+        label = "instance"
+        color = blue
+        convertToDotRB_Node_instance_new [label = "new"] [style = filled] [color = lightgrey]
+        convertToDotRB_Node_instance_index [label = "index"] [style = filled] [color = lightgrey]
+        convertToDotRB_Node_instance_printTreeDOT [label = "printTreeDOT"] [style = filled] [color = lightgrey]
+        subgraph cluster_convertToDotRB_Node_instance_protected{
+          label = "protected"
+          color = blue
+          convertToDotRB_Node_instance_protected_addChild [label = "addChild"] [style = filled] [color = lightgrey]
+        }
+        convertToDotRB_Node_instance_getLabel [label = "getLabel"] [style = filled] [color = lightgrey]
+        convertToDotRB_Node_instance_printTree [label = "printTree"] [style = filled] [color = lightgrey]
+      }
+    }
+    convertToDotRB_getNamesAndLabels [label = "getNamesAndLabels"] [style = filled] [color = lightgrey]
+    convertToDotRB_getCalls [label = "getCalls"] [style = filled] [color = lightgrey]
+  }
+  subgraph cluster_dotToImageRB{
+    label = "dotToImageRB"
+    color = blue
+    dotToImageRB_main [label = "main"] [style = filled] [color = lightgrey]
+  }
+  pullFuncLangRB [label = "pullFuncLangRB"] [style = filled] [color = lightgrey]
+  makeProjGraphRB [label = "makeProjGraphRB"] [style = filled] [color = lightgrey]
+  pullFuncLangRecRB [label = "pullFuncLangRecRB"] [style = filled] [color = lightgrey]
+
+convertToDotRB_main -> convertToDotRB_Node_instance_new
+convertToDotRB_main -> convertToDotRB_getNamesAndLabels
+convertToDotRB_main -> convertToDotRB_Node_instance_index
+convertToDotRB_main -> convertToDotRB_Node_instance_printTreeDOT
+convertToDotRB_main -> convertToDotRB_getCalls
+convertToDotRB_Node_instance_index -> convertToDotRB_Node_instance_getLabel
+convertToDotRB_Node_instance_index -> convertToDotRB_Node_instance_new
+convertToDotRB_Node_instance_index -> convertToDotRB_Node_instance_protected_addChild
+convertToDotRB_Node_instance_index -> convertToDotRB_Node_instance_index
+convertToDotRB_Node_instance_printTree -> convertToDotRB_Node_instance_printTree
+convertToDotRB_Node_instance_printTreeDOT -> convertToDotRB_Node_instance_printTreeDOT
+convertToDotRB_getCalls -> convertToDotRB_getNamesAndLabels
+makeProjGraphRB -> pullFuncLangRecRB
+makeProjGraphRB -> convertToDotRB_main
+makeProjGraphRB -> dotToImageRB_main
+pullFuncLangRecRB -> pullFuncLangRB
+}
