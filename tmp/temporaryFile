@@ -30,7 +30,7 @@ digraph codeMap{
     dotToImageRB_main [label = "main"] [style = filled] [color = lightgrey]
   }
   pullFuncLangRB [label = "pullFuncLangRB"] [style = filled] [color = lightgrey]
-  makeProjGraphRB [label = "makeProjGraphRB"] [style = filled] [color = lightgrey]
+  graphFuncCalls [label = "graphFuncCalls"] [style = filled] [color = lightgrey]
   pullFuncLangRecRB [label = "pullFuncLangRecRB"] [style = filled] [color = lightgrey]
 
 convertToDotRB_main -> convertToDotRB_Node_instance_new
@@ -45,8 +45,8 @@ convertToDotRB_Node_instance_index -> convertToDotRB_Node_instance_index
 convertToDotRB_Node_instance_printTree -> convertToDotRB_Node_instance_printTree
 convertToDotRB_Node_instance_printTreeDOT -> convertToDotRB_Node_instance_printTreeDOT
 convertToDotRB_getCalls -> convertToDotRB_getNamesAndLabels
-makeProjGraphRB -> pullFuncLangRecRB
-makeProjGraphRB -> convertToDotRB_main
-makeProjGraphRB -> dotToImageRB_main
+graphFuncCalls -> pullFuncLangRecRB
+graphFuncCalls -> convertToDotRB_main
+graphFuncCalls -> dotToImageRB_main
 pullFuncLangRecRB -> pullFuncLangRB
 }

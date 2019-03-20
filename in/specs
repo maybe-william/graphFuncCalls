@@ -25,7 +25,7 @@
 
 #name: pullFuncLangRB
 
-#name: makeProjGraphRB
+#name: graphFuncCalls
 #calls: pullFuncLangRecRB, convertToDotRB.main, dotToImageRB.main
 
 #name: pullFuncLangRecRB
