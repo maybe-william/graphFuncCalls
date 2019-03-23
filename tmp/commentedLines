@@ -1,34 +1,20 @@
 #name: dotmain = lib.convertToDotRB.main
 #calls: newNode, namesAndLabels, indexNode, printNodeDOT, getCalls, getDOTAliases, replaceDOTAliases
-
 #name: nodeAddChild = lib.convertToDotRB.Node.instance.protected.addChild
-
 #name: nodeGetLabel = lib.convertToDotRB.Node.instance.getLabel
-
 #name: indexNode = lib.convertToDotRB.Node.instance.index
 #calls: nodeGetLabel, newNode, nodeAddChild, indexNode
-
 #name: newNode = lib.convertToDotRB.Node.instance.new
-
 #name: getDOTAliases = lib.convertToDotRB.getAliases
-
-
 #name: replaceDOTAliases = lib.convertToDotRB.replaceAliases
-
 #name: printTreeNode = lib.convertToDotRB.Node.instance.printTree
 #calls: printTreeNode
-
 #name: printNodeDOT = lib.convertToDotRB.Node.instance.printTreeDOT
 #calls: printNodeDOT
-
 #name: namesAndLabels = lib.convertToDotRB.getNamesAndLabels
-
 #name: getCalls = lib.convertToDotRB.getCalls
 #calls: namesAndLabels
-
 #name: imagemain = lib.dotToImageRB.main
-
 #name: commentedmain = lib.pullCommentedRB.main
-
 #name: bin.graphFuncCalls
 #calls: commentedmain, dotmain, imagemain

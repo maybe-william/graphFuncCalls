@@ -1,2 +1,26 @@
-#!/bin/sh
-((((ruby ../lib/convertToDot.rb) < ../in/specs > ../tmp/temporaryFile) && echo ../tmp/temporaryFile) | (ruby ../lib/dotToImage.rb))
+#!/usr/bin/ruby
+
+projName = "graphFuncCalls"
+
+Dir.chdir('../tmp/')
+d = Dir.new('../in/')
+
+File.open("./commentedLines","w") do
+  |out|
+  d.each do
+    |f|
+    x = ""
+    x = `ruby ../lib/pullCommented.rb < ../in/#{f}` unless File.directory?(f)
+    out.print(x)
+  end
+end
+
+res = `((ruby ../lib/convertToDot.rb) < ../tmp/commentedLines > ../tmp/#{projName})`
+puts (File.absolute_path(res)[0...-3]) + "out/#{projName}.png"
+
+puts `echo ../tmp/#{projName} | (ruby ../lib/dotToImage.rb)`
+
+
+
+
+

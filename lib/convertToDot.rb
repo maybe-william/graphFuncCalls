@@ -1,8 +1,5 @@
 #######-- Authors: not_william  cwcdev.net --#######
 
-
-
-
 ### the Node class is simply used to make a basic tree data structure.
 class Node
 
@@ -121,26 +118,70 @@ def getCalls(coll)
   return calls
 end
 
+def getAliases(lines)
+  ### returns a hash map of aliases and large functions
+  aliases = {}
+  lines.each do
+    |line|
+    ### matches 1 and 3 are key and value
+    m = line.match(/nam[e]:(\w+(\.\w+)*)=(\w+(\.\w+)*)/)
+    if m
+      aliases[m[1]] = m[3]
+    end
+  end
+  return aliases
+end
 
-
-
+def replaceAliases(lines, aliases)
+  ### remove any aliases in the list and replace :alias\n or :alias, or ,alias, or ,alias\n with the full name.
+  ### return the array.
+  ret = lines.join("\n") + "\n" # extra \n for the last entry.
+  aliases.each do
+    |key,value|
+    ret.gsub!(/#{key}=/,"")
+    ret.gsub!(/:#{key}\n/,":"+value+"\n")
+    ret.gsub!(/,#{key}\n/,","+value+"\n")
+    ret.gsub!(/:#{key},/,":"+value+",")
+    ret.gsub!(/,#{key},/,","+value+",")
+  end
+  return ret.split("\n")
+end
 
 def main()
 
   collection = []
+  allDataString = STDIN.read
+  allData = allDataString.split("\n")
+  allData = allData.map do
+    |x|
+    x.gsub(/\s+/,"")
+  end
+  
+  otherData = allData
+  a = getAliases(otherData)
+  allData = replaceAliases(otherData,a)
+  
+
+
+
+
+
+
+
+
 
   ### get one line in advance
-  lastLine = gets()
+  lastLine = allData.shift
   infoLine = ""
 
   ### get all lines (with one got in advance)
-  while nextLine = gets()
+  while nextLine = allData.shift
     ### cut out spaces and match the 'name' line
-    name = lastLine.gsub(/\s+/,"").match(/nam[e]:(\w+(\.\w+)*)/)
+    name = lastLine.match(/nam[e]:(\w+(\.\w+)*)/)
     if name
       infoLine = name[1]
       ### if the line after the 'name' line is the 'calls' line, then add calls, too.
-      call = nextLine.gsub(/\s+/,"").match(/call[s]:((\w+(\.\w+)*)(,\w+(\.\w+)*)*)/)
+      call = nextLine.match(/call[s]:((\w+(\.\w+)*)(,\w+(\.\w+)*)*)/)
       if call
         infoLine = infoLine + ";"+ call[1]
       end
