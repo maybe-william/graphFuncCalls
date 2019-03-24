@@ -1,0 +1,112 @@
+digraph codeMap{
+  subgraph cluster_dotToImageRB{
+    label = "dotToImageRB"
+    color = blue
+    dotToImageRB_main [label = "main"] [style = filled] [color = lightgrey]
+  }
+  BASH [label = "BASH"] [style = filled] [color = lightgrey]
+  subgraph cluster_convertToDotRB{
+    label = "convertToDotRB"
+    color = blue
+    subgraph cluster_convertToDotRB_Node{
+      label = "Node"
+      color = blue
+      convertToDotRB_Node_new [label = "new"] [style = filled] [color = lightgrey]
+      subgraph cluster_convertToDotRB_Node_instance{
+        label = "instance"
+        color = blue
+        convertToDotRB_Node_instance_getLabel [label = "getLabel"] [style = filled] [color = lightgrey]
+        subgraph cluster_convertToDotRB_Node_instance_protected{
+          label = "protected"
+          color = blue
+          convertToDotRB_Node_instance_protected_addChild [label = "addChild"] [style = filled] [color = lightgrey]
+        }
+        convertToDotRB_Node_instance_index [label = "index"] [style = filled] [color = lightgrey]
+        convertToDotRB_Node_instance_printTree [label = "printTree"] [style = filled] [color = lightgrey]
+        convertToDotRB_Node_instance_printTreeDOT [label = "printTreeDOT"] [style = filled] [color = lightgrey]
+      }
+    }
+    convertToDotRB_getNamesAndLabels [label = "getNamesAndLabels"] [style = filled] [color = lightgrey]
+    convertToDotRB_getCalls [label = "getCalls"] [style = filled] [color = lightgrey]
+    convertToDotRB_getAliases [label = "getAliases"] [style = filled] [color = lightgrey]
+    convertToDotRB_replaceAliases [label = "replaceAliases"] [style = filled] [color = lightgrey]
+    convertToDotRB_main [label = "main"] [style = filled] [color = lightgrey]
+  }
+  subgraph cluster_graphFuncCalls{
+    label = "graphFuncCalls"
+    color = blue
+    graphFuncCalls_main [label = "main"] [style = filled] [color = lightgrey]
+    graphFuncCalls_getAllText [label = "getAllText"] [style = filled] [color = lightgrey]
+    graphFuncCalls_getCommentedText [label = "getCommentedText"] [style = filled] [color = lightgrey]
+    graphFuncCalls_getNamesAndCalls [label = "getNamesAndCalls"] [style = filled] [color = lightgrey]
+    graphFuncCalls_verifySyntax [label = "verifySyntax"] [style = filled] [color = lightgrey]
+    graphFuncCalls_toFile [label = "toFile"] [style = filled] [color = lightgrey]
+  }
+  subgraph cluster_File{
+    label = "File"
+    color = blue
+    File_absolutePath [label = "absolutePath"] [style = filled] [color = lightgrey]
+    File_open [label = "open"] [style = filled] [color = lightgrey]
+  }
+  subgraph cluster_Dir{
+    label = "Dir"
+    color = blue
+    Dir_chdir [label = "chdir"] [style = filled] [color = lightgrey]
+    Dir_pwd [label = "pwd"] [style = filled] [color = lightgrey]
+  }
+  subgraph cluster_String{
+    label = "String"
+    color = blue
+    subgraph cluster_String_instance{
+      label = "instance"
+      color = blue
+      String_instance_match [label = "match"] [style = filled] [color = lightgrey]
+      String_instance_encode [label = "encode"] [style = filled] [color = lightgrey]
+    }
+  }
+  subgraph cluster_MatchData{
+    label = "MatchData"
+    color = blue
+    subgraph cluster_MatchData_instance{
+      label = "instance"
+      color = blue
+      MatchData_instance_begin [label = "begin"] [style = filled] [color = lightgrey]
+      MatchData_instance_end [label = "end"] [style = filled] [color = lightgrey]
+    }
+  }
+
+dotToImageRB_main -> BASH
+convertToDotRB_Node_instance_index -> convertToDotRB_Node_instance_getLabel
+convertToDotRB_Node_instance_index -> convertToDotRB_Node_new
+convertToDotRB_Node_instance_index -> convertToDotRB_Node_instance_protected_addChild
+convertToDotRB_Node_instance_index -> convertToDotRB_Node_instance_index
+convertToDotRB_Node_instance_printTree -> convertToDotRB_Node_instance_printTree
+convertToDotRB_Node_instance_printTreeDOT -> convertToDotRB_Node_instance_printTreeDOT
+convertToDotRB_getCalls -> convertToDotRB_getNamesAndLabels
+convertToDotRB_main -> convertToDotRB_Node_new
+convertToDotRB_main -> convertToDotRB_getNamesAndLabels
+convertToDotRB_main -> convertToDotRB_Node_instance_index
+convertToDotRB_main -> convertToDotRB_Node_instance_printTreeDOT
+convertToDotRB_main -> convertToDotRB_getCalls
+convertToDotRB_main -> convertToDotRB_getAliases
+convertToDotRB_main -> convertToDotRB_replaceAliases
+graphFuncCalls_main -> graphFuncCalls_getAllText
+graphFuncCalls_main -> graphFuncCalls_getCommentedText
+graphFuncCalls_main -> graphFuncCalls_getNamesAndCalls
+graphFuncCalls_main -> graphFuncCalls_verifySyntax
+graphFuncCalls_main -> graphFuncCalls_toFile
+graphFuncCalls_main -> BASH
+graphFuncCalls_main -> convertToDotRB_main
+graphFuncCalls_main -> dotToImageRB_main
+graphFuncCalls_getAllText -> File_absolutePath
+graphFuncCalls_getAllText -> Dir_chdir
+graphFuncCalls_getAllText -> Dir_pwd
+graphFuncCalls_getAllText -> BASH
+graphFuncCalls_getAllText -> String_instance_match
+graphFuncCalls_getCommentedText -> String_instance_encode
+graphFuncCalls_getCommentedText -> String_instance_match
+graphFuncCalls_getCommentedText -> MatchData_instance_begin
+graphFuncCalls_getCommentedText -> MatchData_instance_end
+graphFuncCalls_toFile -> String_instance_encode
+graphFuncCalls_toFile -> File_open
+}

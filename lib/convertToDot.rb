@@ -1,26 +1,36 @@
 #######-- Authors: not_william  cwcdev.net --#######
 
+
+
 ### the Node class is simply used to make a basic tree data structure.
 class Node
 
   def initialize(fullName, label) 
+    #name: newNode = convertToDotRB.Node.new
+
     @name = fullName
     @label = label
     @children = []
   end
   
   def getLabel 
+    #name: nodeGetLabel = convertToDotRB.Node.instance.getLabel
+
     return @label
   end
   
   ### I want to funnel tree creation through the index() method. (this tree is currently only designed to be used for the DOT graph language format)
   protected def addChild(n)
+    #name: nodeAddChild = convertToDotRB.Node.instance.protected.addChild
+
     @children << n
   end
   
 
   ### this is the recursive meat and potatoes and meat and potatoes and meat and potatoes...(etc) right here.
   def index(names,labels)
+    #name: indexNode = convertToDotRB.Node.instance.index
+    #calls: nodeGetLabel, newNode, nodeAddChild, indexNode
     
     select = nil
     @children.each do
@@ -45,6 +55,9 @@ class Node
 
   ### recursively print the nodes to visualize the tree structure
   def printTree(tabs = 0)
+    #name: printTreeNode = convertToDotRB.Node.instance.printTree
+    #calls: printTreeNode
+
     x = "\t"*tabs
     puts x+"----"
     puts x+@name
@@ -58,6 +71,9 @@ class Node
 
   ### recursively print the nodes but in DOT language format. Leave off the last '}' in order to add the edges afterwards.
   def printTreeDOT(tabs = 0)
+    #name: printNodeDOT = convertToDotRB.Node.instance.printTreeDOT
+    #calls: printNodeDOT
+
     isFunc = (@children.length == 0)
     x = "  "
 
@@ -83,8 +99,15 @@ class Node
   end
 end 
 
+
+
+
+
+
 ###  take a name like 'pack.pack2.func' and return [ ['pack','pack_pack2','pack_pack2_func'] , ['pack','pack2','func'] ]
 def getNamesAndLabels(functionString)
+  #name: namesAndLabels = convertToDotRB.getNamesAndLabels
+
   arr = functionString.chomp.split(".")
   nameString = ""
   names = []
@@ -100,6 +123,9 @@ end
 
 ### for each named function in a collection, see if it has calls, and if so, add each call to a string to be added to the DOT file.
 def getCalls(coll)
+  #name: getCalls = convertToDotRB.getCalls
+  #calls: namesAndLabels
+
   calls = ""
   coll.each do
     |item|
@@ -119,6 +145,8 @@ def getCalls(coll)
 end
 
 def getAliases(lines)
+  #name: getDOTAliases = convertToDotRB.getAliases
+
   ### returns a hash map of aliases and large functions
   aliases = {}
   lines.each do
@@ -133,6 +161,8 @@ def getAliases(lines)
 end
 
 def replaceAliases(lines, aliases)
+  #name: replaceDOTAliases = convertToDotRB.replaceAliases
+
   ### remove any aliases in the list and replace :alias\n or :alias, or ,alias, or ,alias\n with the full name.
   ### return the array.
   ret = lines.join("\n") + "\n" # extra \n for the last entry.
@@ -148,6 +178,8 @@ def replaceAliases(lines, aliases)
 end
 
 def main()
+  #name: dotmain = convertToDotRB.main
+  #calls: newNode, namesAndLabels, indexNode, printNodeDOT, getCalls, getDOTAliases, replaceDOTAliases
 
   collection = []
   allDataString = STDIN.read

@@ -11,6 +11,6 @@ The idea behind this program is to take a project location with some form of cod
 
 The # can be any comment symbol, or none if the text is inside a multiline comment. The 'tempName ='  part is optional, but recommended (to avoid having to always type the fully qualified name.)  Also, the 'calls:' line must come immediately after the 'name:' line that it applies to.
 
-For now, it works fine on Linux, but inflexibly. Files that you want graphed are put in the 'in' folder. Then, run bin/graphFuncCalls (requires ruby). The graph should appear in the out folder if all goes well.
+For now, it works fine on Linux. Simply call the graphFuncCalls file in bin passing in the directory you wish to graph (with a -r flag if you want it to be recursive) (requires ruby). The graph should appear in the folder that bin/graphFuncCalls was called from if all goes well.
 
-The in folder is currently set up with a call structure for this very project, and the out folder has the resulting graph by default. (Crazy meta.)
+This project is currently set up with function and call info, and the top-level folder has the resulting graph by default. (Crazy meta.)

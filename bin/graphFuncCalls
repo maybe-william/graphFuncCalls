@@ -1,24 +1,161 @@
 #!/usr/bin/ruby
 
-projName = "graphFuncCalls"
+#name: graphFuncCalls.main
+#calls: getText, getComments, getNandC, verifySyn, graphFuncCalls.toFile, BASH, convertToDotRB.main, dotToImageRB.main
 
-Dir.chdir('../tmp/')
-d = Dir.new('../in/')
 
-File.open("./commentedLines","w") do
-  |out|
-  d.each do
+require 'optparse'
+
+options = {}
+options[:recursive] = false
+
+OptionParser.new do |opts|
+
+  opts.on("-r") do |r|
+    options[:recursive] = r
+  end
+
+  opts.parse!(ARGV)
+  options
+end
+
+#pp options
+#pp ARGV
+
+def getAllText(dir, recur)
+  #name: getText = graphFuncCalls.getAllText
+  #calls: File.absolutePath, Dir.chdir, Dir.pwd, BASH, String.instance.match
+
+  ### Takes a directory to search and whether it's recursive or not.
+  ### Returns a string of all the text in all the files specified.
+  ret = ""  
+  
+  # make sure I'm in the right pwd to work on files
+  pw = File.absolute_path(Dir.pwd)
+  temp = File.absolute_path(dir)
+  Dir.chdir(temp)
+
+  level = ""
+  level = "-maxdepth 1" unless recur
+  files = (`find ./ #{level} -type f`).split("\n")
+  files.each do
     |f|
-    x = ""
-    x = `ruby ../lib/pullCommented.rb < ../in/#{f}` unless File.directory?(f)
-    out.print(x)
+    ret = ret + `cat "#{f}"` + "\n" unless f.match(/\/tmp/) || f.match(/README\.md/)
+  end
+
+  # return to the original pwd
+  Dir.chdir(pw)
+  return ret
+end
+
+def getCommentedText(data)
+  #name: getComments = graphFuncCalls.getCommentedText
+  #calls: String.instance.encode, String.instance.match, MatchData.instance.begin, MatchData.instance.end
+
+  comments = [/(#.*?\n|#.*?\z)/, /(\/\/.*?\n|\/\/.*?\z)/, /(\/\*.*?\*\/)/m, /(--.*?\n|--.*?\z)/] #the one with m at the end is multiline.
+
+  commented = ""
+  stillMatching = true
+  allCode = data.encode('UTF-8', :invalid => :replace, :undef => :replace)
+
+  while(stillMatching) do
+    matches = comments.map{
+     |reg|
+     allCode.match(reg)
+    }
+
+    #check if matches or not.
+    matches = matches.keep_if do
+      |x|
+      x
+    end
+    if matches.length == 0
+      stillMatching = false
+    end
+
+    break unless stillMatching
+
+    matchInds = matches.map{
+      |temp|
+      [temp.begin(1),temp.end(1)]
+    }
+
+    section = matchInds.inject do
+      |prev,current|
+      if(prev[0] < current[0])
+        prev
+      else
+        current
+      end
+    end
+
+    tempString = allCode[section[0]...section[1]]
+    allCode = allCode[section[1]...(allCode.length)]
+
+    if tempString[-1] != "\n"
+      tempString = tempString + "\n"
+    end
+
+    commented = commented + tempString
+  end
+
+  return commented 
+end
+
+def getNamesAndCalls(data)
+  #name: getNandC = graphFuncCalls.getNamesAndCalls
+
+  #return only lines that match the name/calls line form, leaving out comment symbols.
+  #put an \n on the end of the data before processing just to be safe.
+  data = data + "\n"
+
+
+  return data
+end
+
+def verifySyntax(data)
+  #name: verifySyn = graphFuncCalls.verifySyntax
+
+  return true
+end
+
+def toFile(data,filename)
+  #name: graphFuncCalls.toFile
+  #calls: String.instance.encode, File.open
+  File.open("#{ProjectRoot}/tmp/"+filename,"w") do
+    |f|
+    data.encode('UTF-8', :invalid => :replace, :undef => :replace).split("\n").each do
+      |dat|
+      f.puts dat unless dat == ""
+    end
   end
 end
 
-res = `((ruby ../lib/convertToDot.rb) < ../tmp/commentedLines > ../tmp/#{projName})`
-puts (File.absolute_path(res)[0...-3]) + "out/#{projName}.png"
+recur = options[:recursive]
+directory = File.absolute_path(ARGV[0] || "./")
+projName = ARGV[1] || "codeMap"
+ProjectRoot = __dir__+'/..'
 
-puts `echo ../tmp/#{projName} | (ruby ../lib/dotToImage.rb)`
+d = Dir.new(directory)
+
+data = getAllText(d,recur)
+toFile(data,"allText")
+
+data = getCommentedText(data)
+toFile(data,"allCommentedText")
+
+data = getNamesAndCalls(data)
+toFile(data,"namesAndCalls")
+
+###!!! verify syntax here.
+exit(-1) unless verifySyntax(data)
+
+# call convertToDot.rb on the file in tmp.
+`((ruby #{ProjectRoot}/lib/convertToDot.rb) < #{ProjectRoot}/tmp/namesAndCalls > #{ProjectRoot}/tmp/#{projName})`
+
+# call dotToImage on the file in tmp (I need to update where the final file goes.)
+res = `echo #{ProjectRoot}/tmp/#{projName} | (ruby #{ProjectRoot}/lib/dotToImage.rb)`
+puts (File.absolute_path(res))
 
 
 
