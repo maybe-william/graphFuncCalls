@@ -1,3 +1,35 @@
+# graphFuncCalls
+
+graphFuncCalls is a Ruby script for displaying the function call structure of a program.
+
+## Installation
+
+Do a git clone or download, install Ruby, and you're good to go.
+
+```bash
+git clone https://www.github.com/maybe-william/graphFuncCalls
+```
+
+Ruby installation example for debian-based linux:
+```bash
+sudo apt-get install ruby
+```
+
+## Usage
+
+From the command line, call the script:
+
+```bash
+graphFuncCalls/bin/graphFuncCalls
+```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+[GNU GPL v3.0](https://choosealicense.com/licenses/gpl-3.0/)
+
+## More Info
 The idea behind this program is to take a project location with some form of code and to graph the calling structure of the all the functions found at said location. Right now, the function declarations of the form this program reads are to be entered manually in any comments in the code or in any file outside of the code (still commented). (currently recognized comment forms are # full line, // full line, -- full line, or /*  */ multiline.) The eventual plan is to be able to parse calling info from several different languages, but it's still manual entry for now. The data entry structure is as follows:
 
 #name: tempName = package.package2.function
